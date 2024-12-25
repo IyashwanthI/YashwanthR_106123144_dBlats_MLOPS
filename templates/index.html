@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog vs Cat Classifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .file-input {
+            margin: 20px 0;
+        }
+        .preview {
+            margin-top: 20px;
+            max-width: 100%;
+            max-height: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dog vs Cat Classifier</h1>
+    <div class="container">
+        <form id="uploadForm" action="/predict" method="post">
+            <div class="file-input">
+                <label for="image">Upload an image:</label>
+                <input type="file" name="file" id="image" accept="image/*" required>
+                <p>
+                    <label for="videoFile">Upload a camera picture:</label>
+                    <input type="file" id="image" capture="environment" accept="image/*" />
+                </p>
+                <p>
+                    <label for="imageFile">Upload a selfie:</label>
+                    <input type="file" id="image" capture="user" accept="image/*" />
+                </p>
+            </div>
+            <img id="preview" class="preview">
+            <br>
+            <button type="submit" id="classifyButton">Classify</button>
+        </form>
+        <div id="Probability"></div>
+        <button id="GiveProb">Click to see probability</button>
+        <h4 id="result">{{ prediction_text }}</h4>
+    </div>
+
+    <script>
+        const images = document.querySelectorAll('input[type="file"]');
+        const preview = document.getElementById('preview');
+        const prob=document.getElementById('Probability')
+        images.forEach(image=>{
+            image.addEventListener('change', function (event) {
+                images.forEach(otherimage=>{
+                    if(otherimage!==event.target){
+                        otherimage='';
+                    }
+                });
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
