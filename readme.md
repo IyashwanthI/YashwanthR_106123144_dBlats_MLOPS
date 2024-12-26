@@ -5,7 +5,7 @@ and finally the ai models and training done by pytorch
 
 the model path for basic cnn is present in the models but for resnet as it is larger than 25 mb i have it in https://drive.google.com/file/d/1-7jj99XSlraXYQb9DHKfOVnPUSJPzgev/view?usp=drive_link
 
-the process involved 
+the process involved :
 fetching the dataset
   using the cifar-10 dataset and isolating cats and dogs from them
 preprocessing data 
