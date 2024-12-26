@@ -7,15 +7,15 @@ the model path for basic cnn is present in the models but for resnet as it is la
 
 the process involved :
 fetching the dataset
-  using the cifar-10 dataset and isolating cats and dogs from them
+  using the cifar-10 dataset and isolating cats and dogs from them,
 preprocessing data 
-  for use by the models (normalization for pre trained ones obtained from the web) 
+  for use by the models (normalization for pre trained ones obtained from the web), 
 constructing 
-  the models weights and forward function
+  the models weights and forward function,
 training the models
-  passing the models through 80 cycles with BCE (for binary classification) and SGD
+  passing the models through 80 cycles with BCE (for binary classification) and SGD,
 
-Resources used
+Resources used :
 https://flask.palletsprojects.com/en/stable/patterns/fileuploads/
 https://www.youtube.com/watch?v=9L9jEOwRrCg&t=320s
 https://www.learnpytorch.io/03_pytorch_computer_vision/
