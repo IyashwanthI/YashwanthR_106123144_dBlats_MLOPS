@@ -5,6 +5,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from PIL import Image
 from torchvision import transforms
+import torch.serialization
+
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -26,10 +28,8 @@ class Net(nn.Module):
         x = self.dropout_fc(x)
         x = self.fc2(x)
         return x
+        
 FILE = 'model/model.pth'
-model = Net()
-model.load_state_dict(torch.load(FILE))
-model.eval()
 app = Flask(__name__)
 @app.route('/')
 def home():
@@ -39,15 +39,39 @@ def predict():
     file = request.files['file']
     if not file:
         return render_template('index.html', prediction_text="No file uploaded!")
+    type= request.form.get('model')
+    if not type:
+        return render_template('index.html',prediction_text='No model chosen')
+    
+    
     img = Image.open(io.BytesIO(file.read())).convert('RGB')
-    transform = transforms.Compose([
-        transforms.Resize((32, 32)),
+    if request.form['model']=='cnn':
+        model = Net()
+        model.load_state_dict(torch.load(FILE, map_location=torch.device('cpu')))
+        transform = transforms.Compose([
+            transforms.Resize((32, 32)),
+            transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        ])
+        
+    else:
+        from torchvision.models import resnet18
+        transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    ])
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
+        img_tensor = transform(img).unsqueeze(0)
+        device = torch.device("cpu")
+        model=resnet18(pretrained=False)
+        model.fc=nn.Linear(model.fc.in_features,2)
+        model.load_state_dict(torch.load('/model/modelres.pth', map_location=device))
+        model=model.to(device)
     img_tensor = transform(img).unsqueeze(0)
     with torch.no_grad():
         output = model(img_tensor)
         _, predicted = torch.max(output, 1)
         result = 'Dog' if predicted.item() == 1 else 'Cat'
     return render_template('index.html', prediction_text=f"The uploaded image is classified as: {result}")
+
+if __name__ == '__main__':
+    app.run(debug=True)
