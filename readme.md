@@ -3,11 +3,11 @@ backend by flask
 frontend html,css,javascript
 and finally the ai models and training done by pytorch
 
-the model path for basic cnn is present in the models but for resnet as it is larger than 25 mb i have it in https://drive.google.com/file/d/1-7jj99XSlraXYQb9DHKfOVnPUSJPzgev/view?usp=drive_link
+the model path for basic cnn is present in /model but for resnet as it is larger than 25 mb i have it in https://drive.google.com/file/d/1-7jj99XSlraXYQb9DHKfOVnPUSJPzgev/view?usp=drive_link
 
 the process involved :
 fetching the dataset
-  using the cifar-10 dataset and isolating cats and dogs from them,
+  using the cifar-10 dataset and isolating cats 3 and dogs 5 from them,
 preprocessing data 
   for use by the models (normalization for pre trained ones obtained from the web), 
 constructing 
