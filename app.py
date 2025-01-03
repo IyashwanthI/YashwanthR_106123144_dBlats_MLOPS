@@ -64,7 +64,7 @@ def predict():
         device = torch.device("cpu")
         model=resnet18(pretrained=False)
         model.fc=nn.Linear(model.fc.in_features,2)
-        model.load_state_dict(torch.load('/model/modelres.pth', map_location=device))
+        model.load_state_dict(torch.load('model/modelres.pth', map_location=device))
         model=model.to(device)
     img_tensor = transform(img).unsqueeze(0)
     with torch.no_grad():
